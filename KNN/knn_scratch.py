@@ -40,3 +40,26 @@ y_pred=knn.predict(X_test)
 
 from sklearn.metrics import accuracy_score
 print("Accuracy: ",accuracy_score(y_pred,y_test))
+
+import matplotlib.pyplot as plt
+X_2d=data[['PetalLengthCm','PetalWidthCm']].values
+y_2d=data['Species'].values
+X_train_2d,X_test_2d,y_train_2d,y_test_2d=train_test_split(X_2d,y_2d,test_size=0.2,random_state=42)
+scaler_2d=StandardScaler()
+X_train_2d=scaler_2d.fit_transform(X_train_2d)
+X_test_2d=scaler_2d.transform(X_test_2d)
+colors = {'Iris-setosa': 'red', 'Iris-versicolor': 'blue', 'Iris-virginica': 'green'}
+knn_2d=KNNClassifier(k=3)
+knn_2d.fit(X_train_2d,y_train_2d)
+y_pred_2d=knn_2d.predict(X_test_2d)
+plt.figure(figsize=(8,6))
+for label,color in colors.items():
+    idx=y_pred_2d==label
+    plt.scatter(X_test_2d[idx,0],X_test_2d[idx,1],color=color,label=label,edgecolors='black',s=80)
+plt.xlabel('Petal Length (scaled)')
+plt.ylabel('Petal Width (scaled)')
+plt.title('KNN Predictions on Test Set')
+plt.legend()
+plt.show()
+
+
